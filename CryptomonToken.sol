@@ -257,6 +257,7 @@ contract Pausable is Ownable {
  *
  * @dev StandardToken modified with pausable transfers.
  **/
+
 contract PausableToken is StandardToken, Pausable {
 
     function transfer(address _to, uint256 _value) public whenNotPaused returns (bool) {
@@ -286,6 +287,7 @@ contract PausableToken is StandardToken, Pausable {
  * @dev Issue: * https://github.com/OpenZeppelin/zeppelin-solidity/issues/120
  * Based on code by TokenMarketNet: https://github.com/TokenMarketNet/ico/blob/master/contracts/MintableToken.sol
  */
+
 contract MintableToken is StandardToken, Ownable {
     event Mint(address indexed to, uint256 amount);
     event MintFinished();

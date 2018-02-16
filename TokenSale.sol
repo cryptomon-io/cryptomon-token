@@ -123,6 +123,7 @@ contract TokenSale is FinalizableCrowdsale {
     uint256 public tokensSold;
     uint256 public toBeSold;
     uint256 public price;
+    uint256 public minPurchase;
 
     event SaleExtended(uint256 newEndTime);
 
@@ -134,13 +135,15 @@ contract TokenSale is FinalizableCrowdsale {
      * @param _wallet address is the address the funds will go to - it's not a multisig
      * @param _toBeSold uint256 number of tokens to be sold on this presale, in wei, e.g. 1969482*1000000000
      * @param _price uint256 presale price e.g. 692981
+     * @param _minPurchase uint256 minimum purchase amount in weis
      */
-    function TokenSale(CryptomonToken _token, uint256 _startTime, uint256 _endTime, address _wallet, uint256 _toBeSold, uint256 _price)
+    function TokenSale(CryptomonToken _token, uint256 _startTime, uint256 _endTime, address _wallet, uint256 _toBeSold, uint256 _price, uint256 _minPurchase)
     FinalizableCrowdsale()
     Crowdsale(_startTime, _endTime, _wallet, _token)
     {
         toBeSold = _toBeSold;
         price = _price;
+        minPurchase = _minPurchase;
     }
 
     /*
@@ -153,6 +156,9 @@ contract TokenSale is FinalizableCrowdsale {
         require(validPurchase());
 
         uint256 weiAmount = msg.value;
+
+        bool isMinPurchase = weiAmount >= minPurchase;
+        require(isMinPurchase);
 
         // calculate token amount to be created
         uint256 toGet = howMany(msg.value);
